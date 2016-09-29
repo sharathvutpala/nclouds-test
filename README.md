@@ -8,3 +8,12 @@ In order to run this playbook, aws cli configuration must be done on the host ma
 ``` bash
 aws configure
 ```
+
+Once the aws cli is configured, we can run the playbook with the following command.
+
+``` bash
+ansible-playbook rds.yml -vvv
+```
+Here -vvv indicates verbosity level. 
+
+Facts related to Read-replica of MySQL DB instance are gathered in ./facts/facts.
