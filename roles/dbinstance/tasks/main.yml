@@ -1,0 +1,27 @@
+---
+
+- name: Create RDS instance
+  local_action:
+    module: rds
+    command: create
+    instance_name: sharath-nclouds
+    db_engine: MySQL
+    db_name: test
+    engine_version: 5.5.46
+    instance_type: db.t2.micro
+    username: sharath
+    password: "{{ lookup('password', '/tmp/passwordfile') }}"
+    region: us-east-1
+    vpc_security_groups: sg-e3551f99
+    subnet: mysql
+    multi_zone: yes
+    backup_retention: 7
+    maint_window: "Sat:10:00-Sat:12:30"  # UTC 24hr
+    upgrade: yes
+    size: 10
+    wait: yes
+    wait_timeout: 1200
+    port: 3306
+
+# print the password to stdout for operator
+- debug: msg="RDS password created is {{ lookup('password', '/tmp/passwordfile') }}"

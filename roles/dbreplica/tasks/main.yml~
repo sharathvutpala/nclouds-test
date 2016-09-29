@@ -1,0 +1,31 @@
+---
+- name: Create read-replica
+  local_action:
+    module: rds
+    command: replicate
+    instance_name: db-read-replica
+    source_instance: sharath-nclouds
+    region: us-east-1
+    wait: yes
+    wait_timeout: 1200
+
+#- local_action:
+#    module: rds
+- rds:
+    command: modify
+    instance_name: db-read-replica
+    region: us-east-1
+    instance_type: db.t2.medium
+    db_engine: MySQL
+    engine_version: 5.6.27
+    upgrade: yes
+    apply_immediately: yes
+   
+- rds:
+    command: facts
+    instance_name: db-read-replica
+    region: us-east-1
+  register: newfacts
+
+- local_action: copy content={{ newfacts }} dest=./facts/facts
+
